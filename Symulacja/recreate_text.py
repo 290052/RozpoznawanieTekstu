@@ -26,12 +26,17 @@ def split_into_lines(identified_chars):
   return lines
 
 def remove_duplicates(line):
-  for i in range(len(line) - 1):
+  i = 0
+  while i < len(line) - 1:
     if abs(line[i]["x"] - line[i + 1]["x"]) <= 3:
       if line[i]["score"] > line[i + 1]["score"]:
         line.pop(i + 1)
       else:
         line.pop(i)
+    else:
+       i += 1
+
+  return line
 
 def recreate_text(identified_chars):
   text = ""
@@ -41,10 +46,18 @@ def recreate_text(identified_chars):
   for line in lines:
     line.sort(key = sort_by_x)
 
-    remove_duplicates(line)
+    line = remove_duplicates(line)
+
+    last_char = {}
 
     for char in line:
+      if last_char:
+        if abs(last_char["x"] - char["x"]) > 20:
+          text += " "
+
       text += char["char"]
+
+      last_char = char
 
     text += "\n"
 

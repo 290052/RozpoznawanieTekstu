@@ -10,7 +10,7 @@ def generate_filters():
   # Lista znaków dla których zostanie wygenerowany wzorzec
   characters = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPQRSŚTUVWXYZŹŻ"
   characters += "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż"
-  #characters += "0123456789"
+  characters += "0123456789"
   #characters += ".,/?;:!`~@#$%^&*()'"
   #characters += '"'
   #characters += "\\"

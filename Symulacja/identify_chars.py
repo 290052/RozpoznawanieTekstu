@@ -17,8 +17,8 @@ def identify_chars(image, results, filters):
     draw = ImageDraw.Draw(identified[key])
     draw_all = ImageDraw.Draw(identified_all)
 
-    #positions = np.where(result >= result[max_position] * .997)
-    positions = np.where(result >= result[max_position])
+    positions = np.where(result >= result[max_position] * .997)
+    #positions = np.where(result >= result[max_position])
 
     for position in range(len(positions[0])):
       if result[max_position] > 430:

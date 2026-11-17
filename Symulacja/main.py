@@ -14,8 +14,8 @@ width = 800
 height = 300
 
 # Tekst do narysowania na obrazie
-#text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus massa neque, maximus at felis et, elementum cursus nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis ultricies eu enim tincidunt feugiat. Aliquam tincidunt congue lacus, sed."
-text = "Ala ma kota, kot ma alę........................... Ola ma psa"
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus massa neque, maximus at felis et, elementum cursus nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis ultricies eu enim tincidunt feugiat. Aliquam tincidunt congue lacus, sed."
+#text = "Ala ma kota, kot ma alę, są ze sobą szczęśliwi. As to pies ali."
 
 # Generowanie obrazu
 image = generate_image(width, height, text)
