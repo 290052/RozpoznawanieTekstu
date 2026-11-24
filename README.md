@@ -39,6 +39,6 @@ python main.py
 🚧 Sekcja w przygotowaniu – przykładowe wykresy korelacji oraz wizualizacje rozpoznanego tekstu zostaną dodane po zakończeniu prac nad symulacją.
 
 ## 🛠️ Wykorzystane technologie
-- Python (NumPy, Pillow, Matplotlib) – obliczenia numeryczne i wizualizacja danych.
+- Python (NumPy, Pillow, Matplotlib, PyTorch, scipy) – obliczenia numeryczne i wizualizacja danych.
 - $\LaTeX$ – skład tekstu, wzorów matematycznych oraz generowanie finalnego sprawozdania.
 - Narzędzia AI (ChatGPT) - wsparcie w debugowaniu
