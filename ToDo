@@ -1,0 +1,2 @@
+- Poprawić splot/korelację żeby poprawnie rozpoznawała znaki interpunkcyjne. Pomysł: Rozpoznanie liter, następnie wymazanie liter z obrazu źródłowego i na końcu rozpoznanie znaków interpunkcyjnych
+- Zaproponować i zaimplementować lepszą metodę rozpoznawania tekstu z obrazu. Sieć neuronowa?

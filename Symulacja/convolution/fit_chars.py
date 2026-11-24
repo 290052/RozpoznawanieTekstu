@@ -23,11 +23,8 @@ def fit_chars(image, filters, method):
       len(image[0]) - len(filter[0]) + 1
     ))
 
-    # Określenie wielkości filtra
-    f_height, f_width = filter.shape
-
     # Wygenerowanie wszystkich możliwych fragmentów obrazu o wielkości filtra
-    fragments = sliding_window_view(image, (f_height, f_width))
+    fragments = sliding_window_view(image, filter.shape)
 
     # Wykonanie splotu/korelacji każdego fragmentu obrazu z filtrem
     results[key] = np.einsum("ijkl,kl->ij", fragments, filter)

@@ -2,7 +2,7 @@
 Projekt realizowany w ramach przedmiotu Sygnały i Obrazy Cyfrowe na Politechnice Wrocławskiej. Celem ćwiczenia jest zrozumienie zastosowania splotu i korelacji w procesie rozpoznawania tekstu z obrazu.
 
 ## 📋 Cel i założenia ćwiczenia (Streszczenie instrukcji)
-Ćwiczenie polega na zrozumieniu procesu rozpoznawania tekstu z obrazu za pomocą splotu oraz korelacji. W tym celu należy przygotować w wybranym języku programowania symulację rozpoznającą tekst znajdujący się na obrazie.
+Ćwiczenie polega na zrozumieniu procesu rozpoznawania tekstu z obrazu za pomocą splotu oraz korelacji. W tym celu należy przygotować w wybranym języku programowania symulację rozpoznającą tekst znajdujący się na obrazie. Ćwiczenie wymaga również na zaproponowaniu i porównaniu wybranej lepszej metody rozpoznawania tekstu z obrazu. Jako lepsza metoda zaproponowana została sieć neuronowa.
 
 ## 📂 Struktura repozytorium
 Projekt został podzielony na dwie główne części odpowiadające za obliczenia oraz dokumentację wyników:

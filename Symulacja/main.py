@@ -1,24 +1,31 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import ImageFont
 
 from textgen import generate_image
 from simpoisson import add_poisson_noise
 from genchars import generate_filters
-from fit_chars import fit_chars
-from identify_chars import identify_chars
-from recreate_text import recreate_text
+from convolution.fit_chars import fit_chars
+from convolution.identify_chars import identify_chars
+from convolution.recreate_text import recreate_text
 
-# Parametry obrazu
-width = 800
-height = 300
+from neural_network.segmentation import segment_image, visualize_segments
+from neural_network.normalize_segments import resize_chars
+from neural_network.recreate_text import recreate_text_nn
+from neural_network.neural_network import check_char
+
+# Metoda rozpoznawania tekstu (0 - splot/korelacja, 1 - sieć neuronowa)
+method = 1
+
+# Czcionka
+font = ImageFont.truetype("JetBrainsMonoNerdFont-Regular.ttf", 24)
 
 # Tekst do narysowania na obrazie
-text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus massa neque, maximus at felis et, elementum cursus nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis ultricies eu enim tincidunt feugiat. Aliquam tincidunt congue lacus, sed."
-#text = "Ala ma kota, kot ma alę, są ze sobą szczęśliwi. As to pies ali."
+#text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus massa neque, maximus at felis et, elementum cursus nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis ultricies eu enim tincidunt feugiat. Aliquam tincidunt congue lacus, sed."
+text = "Ala ma kota, kot ma alę, są ze sobą szczęśliwi. As to pies ali."
 
 # Generowanie obrazu
-image = generate_image(width, height, text)
+image = generate_image(text, font)
 
 # Wyświetlenie obrazu
 plt.figure(figsize=(12, 5))
@@ -28,44 +35,67 @@ plt.axis("off")
 plt.show()
 
 # Symulacja szumu poissona
-#image = add_poisson_noise(image, 4)
+image = add_poisson_noise(image, 16)
 
 # Wyświetlenie obrazu
-#plt.figure(figsize=(12, 5))
-#plt.imshow(image, cmap="gray", vmin=0, vmax=255)
-#plt.title("Obraz z szumem Poissona")
-#plt.axis("off")
-#plt.show()
-
-# Generowanie wzorców liter
-filters = generate_filters()
-
-# Generowanie macierzy prezentujących wyniki splotu/korelacji ("convolution" - splot, "corelation" - korelacja)
-results = fit_chars(image, filters, "corelation")
-
-# Wyświetlanie przykładowej macierzy wyników splotu/korelacj
 plt.figure(figsize=(12, 5))
-plt.imshow(results["m"], cmap="gray", vmin=-495, vmax=495)
-plt.title("Macierz wyników splotu/korelacji dla litery m")
+plt.imshow(image, cmap="gray", vmin=0, vmax=255)
+plt.title("Obraz z szumem Poissona")
 plt.axis("off")
 plt.show()
 
-identified, identified_all, identified_chars = identify_chars(image, results, filters)
+if method == 0:
+  # Generowanie wzorców liter
+  filters = generate_filters(font)
 
-# Wszystkie wykryte litery
-plt.figure(figsize=(12, 5))
-plt.imshow(identified_all, cmap="gray", vmin=0, vmax=255)
-plt.title("Wszystkie wykryte litery")
-plt.axis("off")
-plt.show()
+  # Generowanie macierzy prezentujących wyniki splotu/korelacji ("convolution" - splot, "corelation" - korelacja)
+  results = fit_chars(image, filters, "corelation")
 
-# Wyświetlanie wykrytych liter m
-plt.figure(figsize=(12, 5))
-plt.imshow(identified["m"], cmap="gray", vmin=0, vmax=255)
-plt.title("Wykryte litery m")
-plt.axis("off")
-plt.show()
+  # Wyświetlanie przykładowej macierzy wyników splotu/korelacj
+  plt.figure(figsize=(12, 5))
+  plt.imshow(results["m"], cmap="gray", vmin=-495, vmax=495)
+  plt.title("Macierz wyników splotu/korelacji dla litery m")
+  plt.axis("off")
+  plt.show()
 
-text = recreate_text(identified_chars)
+  identified, identified_all, identified_chars = identify_chars(image, results, filters)
 
-print(text)
+  # Wszystkie wykryte litery
+  plt.figure(figsize=(12, 5))
+  plt.imshow(identified_all, cmap="gray", vmin=0, vmax=255)
+  plt.title("Wszystkie wykryte litery")
+  plt.axis("off")
+  plt.show()
+
+  # Wyświetlanie wykrytych liter m
+  plt.figure(figsize=(12, 5))
+  plt.imshow(identified["m"], cmap="gray", vmin=0, vmax=255)
+  plt.title("Wykryte litery m")
+  plt.axis("off")
+  plt.show()
+
+  text = recreate_text(identified_chars)
+
+  print(text)
+
+if method == 1:
+  characters = segment_image(image)
+
+  visualize_segments(image, characters)
+
+  characters = resize_chars(characters)
+
+  text = recreate_text_nn(characters)
+
+  print("Odtworzony tekst:")
+  print(text)
+
+  char = check_char(characters[0]["image"])
+
+  print("Rozpoznany znak: ", char)
+
+  plt.figure(figsize=(12, 5))
+  plt.imshow(characters[0]["image"], cmap="gray", vmin=0, vmax=255)
+  plt.title("Przykładowy segment ze znakiem")
+  plt.axis("off")
+  plt.show()
