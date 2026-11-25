@@ -27,6 +27,17 @@ def fit_chars(image, filters, method):
     fragments = sliding_window_view(image, filter.shape)
 
     # Wykonanie splotu/korelacji każdego fragmentu obrazu z filtrem
-    results[key] = np.einsum("ijkl,kl->ij", fragments, filter)
+    result = np.einsum("ijkl,kl->ij", fragments, filter)
+
+    # Norma filtra
+    filter_norm = np.sqrt(np.sum(filter ** 2))
+
+    # Norma każdego fragmentu obrazu
+    fragment_norm = np.sqrt(np.sum(fragments ** 2, axis=(2, 3)))
+
+    # Normalizacja wyniku
+    result = result / (fragment_norm * filter_norm + 1e-8)
+
+    results[key] = result
 
   return results

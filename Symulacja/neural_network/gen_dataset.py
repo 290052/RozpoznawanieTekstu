@@ -20,7 +20,8 @@ font_names = [
   #"AdwaitaMono-Regular.ttf"
 ]
 
-lambdas = [1, 4, 16, 256]
+#lambdas = [1, 4, 16, 256]
+lambdas = [16]
 
 def shift_image(image, dx, dy):
   img = Image.fromarray(image)

@@ -22,7 +22,7 @@ def identify_chars(image, results, filters):
     #positions = np.where(result >= result[max_position] * .989)
 
     for position in range(len(positions[0])):
-      if result[max_position] > 420:
+      if result[max_position] > 0.9:
         y = positions[0][position]
         x = positions[1][position]
 

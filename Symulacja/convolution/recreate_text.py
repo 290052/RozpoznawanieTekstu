@@ -59,6 +59,7 @@ def recreate_text(identified_chars):
 
       last_char = char
 
-    text += "\n"
+    #text += "\n"
+    text += " "
 
   return text

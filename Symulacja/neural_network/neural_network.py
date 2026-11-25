@@ -12,18 +12,6 @@ label_to_char = {
   for sample in training_dataset
 }
 
-training_x = torch.from_numpy(
-  np.stack([sample["image"] for sample in training_dataset])
-).float()
-
-training_x = training_x.flatten(start_dim=1)
-
-training_x = training_x / 255.0
-
-training_y = torch.tensor([
-  sample["label"] for sample in training_dataset
-], dtype=torch.long)
-
 model = torch.nn.Sequential(
   torch.nn.Linear(495, 128),
   torch.nn.ReLU(),
@@ -37,9 +25,19 @@ if os.path.exists("Symulacja/neural_network/model.pth"):
 elif os.path.exists("Symulacja/neural_network/checkpoint.pth"):
   model.load_state_dict(torch.load("Symulacja/neural_network/checkpoint.pth", weights_only=True))
 else:
-  train_model(model, training_x, training_y)
+  training_x = torch.from_numpy(
+  np.stack([sample["image"] for sample in training_dataset])
+  ).float()
 
-#train_model(model, training_x, training_y)
+  training_x = training_x.flatten(start_dim=1)
+
+  training_x = training_x / 255.0
+
+  training_y = torch.tensor([
+  sample["label"] for sample in training_dataset
+  ], dtype=torch.long)
+
+  train_model(model, training_x, training_y)
 
 def check_char(char_img):
   x = torch.from_numpy(char_img).float()

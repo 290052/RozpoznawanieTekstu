@@ -14,8 +14,10 @@ def split_into_lines(identified_chars):
   line = []
 
   for char in identified_chars:
-    if abs(char["y"] - last_y) > 35:
-      lines.append(line)
+    if abs(char["y"] - last_y) > 30:
+      if line:
+        lines.append(line)
+      
       line = []
       last_y = char["y"]
 
@@ -44,6 +46,6 @@ def recreate_text_nn(identified_chars):
 
       last_char = char
 
-    text += "\n"
+    text += " "
 
   return text

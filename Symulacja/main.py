@@ -5,6 +5,8 @@ from PIL import ImageFont
 from textgen import generate_image
 from simpoisson import add_poisson_noise
 from genchars import generate_filters
+from accuracy import calc_accuracy
+
 from convolution.fit_chars import fit_chars
 from convolution.identify_chars import identify_chars
 from convolution.recreate_text import recreate_text
@@ -12,7 +14,6 @@ from convolution.recreate_text import recreate_text
 from neural_network.segmentation import segment_image, visualize_segments
 from neural_network.normalize_segments import resize_chars
 from neural_network.recreate_text import recreate_text_nn
-from neural_network.neural_network import check_char
 
 # Metoda rozpoznawania tekstu (0 - splot/korelacja, 1 - sieć neuronowa)
 method = 1
@@ -49,16 +50,26 @@ if method == 0:
   filters = generate_filters(font)
 
   # Generowanie macierzy prezentujących wyniki splotu/korelacji ("convolution" - splot, "corelation" - korelacja)
+  #results = fit_chars(image, filters, "convolution")
   results = fit_chars(image, filters, "corelation")
 
   # Wyświetlanie przykładowej macierzy wyników splotu/korelacj
   plt.figure(figsize=(12, 5))
-  plt.imshow(results["m"], cmap="gray", vmin=-495, vmax=495)
+  plt.imshow(results["m"], cmap="gray", vmin=0, vmax=1)
   plt.title("Macierz wyników splotu/korelacji dla litery m")
   plt.axis("off")
   plt.show()
 
   identified, identified_all, identified_chars = identify_chars(image, results, filters)
+
+  recreted_text = recreate_text(identified_chars)
+
+  print("Odtworzony tekst:")
+  print(recreted_text)
+
+  accuracy = calc_accuracy(recreted_text, text)
+
+  print("Skuteczność:", accuracy, "%")
 
   # Wszystkie wykryte litery
   plt.figure(figsize=(12, 5))
@@ -67,35 +78,17 @@ if method == 0:
   plt.axis("off")
   plt.show()
 
-  # Wyświetlanie wykrytych liter m
-  plt.figure(figsize=(12, 5))
-  plt.imshow(identified["m"], cmap="gray", vmin=0, vmax=255)
-  plt.title("Wykryte litery m")
-  plt.axis("off")
-  plt.show()
-
-  text = recreate_text(identified_chars)
-
-  print(text)
-
 if method == 1:
   characters = segment_image(image)
 
-  visualize_segments(image, characters)
-
   characters = resize_chars(characters)
 
-  text = recreate_text_nn(characters)
+  recreted_text = recreate_text_nn(characters)
 
   print("Odtworzony tekst:")
-  print(text)
+  print(recreted_text)
 
-  char = check_char(characters[0]["image"])
+  accuracy = calc_accuracy(recreted_text, text)
+  print("Skuteczność:", accuracy, "%")
 
-  print("Rozpoznany znak: ", char)
-
-  plt.figure(figsize=(12, 5))
-  plt.imshow(characters[0]["image"], cmap="gray", vmin=0, vmax=255)
-  plt.title("Przykładowy segment ze znakiem")
-  plt.axis("off")
-  plt.show()
+  visualize_segments(image, characters)
